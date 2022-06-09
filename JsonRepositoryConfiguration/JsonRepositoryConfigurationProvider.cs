@@ -26,16 +26,30 @@ namespace JsonRepositoryConfiguration
             if (Source.ReloadOnChange)
                 Task.Run(() =>
                 {
-                    var oldHash = ToSha256(Source.JsonConfigurationRepository.Get(Source.Key));
+                    var oldHash = ToSha256(GetJsonString());
                     while (true)
                     {
                         Task.Delay(Source.ChangeCheckInterval * 1000).Wait();
-                        var newHash = ToSha256(Source.JsonConfigurationRepository.Get(Source.Key));
+                        var newHash = ToSha256(GetJsonString());
                         if (oldHash != newHash)
                             _cts?.Cancel();
                         oldHash = newHash;
                     }
                 });
+        }
+
+        private string GetJsonString()
+        {
+            string jsonString;
+            try
+            {
+                jsonString = Source.JsonConfigurationRepository.Get(Source.Key);
+            }
+            catch (Exception e)
+            {
+                jsonString = string.Empty;
+            }
+            return jsonString;
         }
 
         private IChangeToken CreateChangeToken()
@@ -46,7 +60,7 @@ namespace JsonRepositoryConfiguration
 
         private void Load(bool reload)
         {
-            var jsonString = Source.JsonConfigurationRepository?.Get(Source.Key);
+            var jsonString = GetJsonString();
 
             if (string.IsNullOrWhiteSpace(jsonString))
             {
