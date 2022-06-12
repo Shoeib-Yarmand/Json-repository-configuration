@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Linq;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace JsonRepositoryConfiguration
 {
@@ -56,5 +58,19 @@ namespace JsonRepositoryConfiguration
             return null;
         }
 
+        public static IServiceCollection AddJsonRepositoryReloadOnChange(this IServiceCollection services, IConfiguration configuration)
+        {
+            var configurationRoot = (IConfigurationRoot)configuration;
+
+            foreach (var configurationProvider in configurationRoot.Providers
+                         .Where(p => p is JsonRepositoryConfigurationProvider)
+                         .Cast<JsonRepositoryConfigurationProvider>())
+            {
+                if (configurationProvider.Source.ReloadOnChange)
+                    services.AddHostedService(p => new JsonRepositoryReloadHostedService(configurationProvider));
+            }
+
+            return services;
+        }
     }
 }
