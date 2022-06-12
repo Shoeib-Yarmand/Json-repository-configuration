@@ -4,7 +4,7 @@
     <TargetFramework>netstandard2.1</TargetFramework>
     <Nullable>enable</Nullable>
     <PackageId>JsonRepositoryConfiguration</PackageId>
-    <Version>0.9.4</Version>
+    <Version>0.9.5</Version>
     <Authors>Shoeib</Authors>
     <Product>JsonRepositoryConfiguration</Product>
     <Description>JSON Repository configuration provider implementation for Microsoft.Extensions.Configuration. The JSON can can be provided by any repository including SQL/NoSQL Database, API call, etc...</Description>
@@ -12,7 +12,7 @@
     <PackageProjectUrl>https://github.com/</PackageProjectUrl>
     <RepositoryUrl>https://github.com/</RepositoryUrl>
     <PackageTags>Configuration;Options;AddJson;Microsoft.Extensions.Configuration;JSON;Database;Repository;SQL;NoSQL</PackageTags>
-    <PackageReleaseNotes>Added AddJsonRepositoryReloadOnChange as an extension method to IServiceCollection to register required hosted services to support ReloadOnChange in a better way</PackageReleaseNotes>
+    <PackageReleaseNotes>Register only one backgrond service</PackageReleaseNotes>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
 

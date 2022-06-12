@@ -1,15 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.ExceptionServices;
+using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
+using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Primitives;
 
 namespace JsonRepositoryConfiguration
 {
-    public class JsonRepositoryConfigurationProvider : ConfigurationProvider
+    public class JsonRepositoryConfigurationProvider : ConfigurationProvider, IDisposable
     {
         internal JsonRepositoryConfigurationSource Source { get; }
+        private IDisposable _changeTokenRegistration;
+        private CancellationTokenSource _cts;
 
         public JsonRepositoryConfigurationProvider(JsonRepositoryConfigurationSource source)
         {
@@ -21,7 +27,7 @@ namespace JsonRepositoryConfiguration
             Load(reload: false);
         }
 
-        internal void Load(bool reload)
+        private void Load(bool reload)
         {
             var jsonString = GetJsonString();
 
@@ -55,6 +61,24 @@ namespace JsonRepositoryConfiguration
             }
         }
 
+        internal async Task ReloadOnChangeAsync(CancellationToken stoppingToken)
+        {
+            if (!Source.ReloadOnChange)
+                return;
+
+            _changeTokenRegistration = ChangeToken.OnChange(CreateChangeToken, () => Load(reload: true));
+
+            var oldHash = ToSha256(GetJsonString());
+            while (!stoppingToken.IsCancellationRequested)
+            {
+                await Task.Delay(Source.ChangeCheckInterval * 1000, stoppingToken);
+                var newHash = ToSha256(GetJsonString());
+                if (oldHash != newHash)
+                    _cts?.Cancel();
+                oldHash = newHash;
+            }
+        }
+
         private string GetJsonString()
         {
             string jsonString;
@@ -67,6 +91,21 @@ namespace JsonRepositoryConfiguration
                 jsonString = string.Empty;
             }
             return jsonString;
+        }
+
+        private IChangeToken CreateChangeToken()
+        {
+            _cts = new CancellationTokenSource();
+            return new CancellationChangeToken(_cts.Token);
+        }
+
+        private string ToSha256(string input)
+        {
+            using var sha256 = SHA256.Create();
+            var builder = new StringBuilder();
+            foreach (var b in sha256.ComputeHash(Encoding.UTF8.GetBytes(input)))
+                builder.Append(b.ToString("X2"));
+            return builder.ToString();
         }
 
         private void HandleException(ExceptionDispatchInfo info)
@@ -87,6 +126,13 @@ namespace JsonRepositoryConfiguration
             {
                 info.Throw();
             }
+        }
+
+        public void Dispose() => Dispose(true);
+
+        protected virtual void Dispose(bool disposing)
+        {
+            _changeTokenRegistration?.Dispose();
         }
     }
 }

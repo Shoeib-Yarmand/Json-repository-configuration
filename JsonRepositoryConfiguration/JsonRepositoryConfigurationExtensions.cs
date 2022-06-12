@@ -62,13 +62,12 @@ namespace JsonRepositoryConfiguration
         {
             var configurationRoot = (IConfigurationRoot)configuration;
 
-            foreach (var configurationProvider in configurationRoot.Providers
-                         .Where(p => p is JsonRepositoryConfigurationProvider)
-                         .Cast<JsonRepositoryConfigurationProvider>())
-            {
-                if (configurationProvider.Source.ReloadOnChange)
-                    services.AddHostedService(p => new JsonRepositoryReloadHostedService(configurationProvider));
-            }
+            var roloadableConfigurationProviders = configurationRoot.Providers
+                .Where(cp => cp is JsonRepositoryConfigurationProvider)
+                .Cast<JsonRepositoryConfigurationProvider>()
+                .Where(cp => cp.Source.ReloadOnChange);
+
+            services.AddHostedService(p => new JsonRepositoryReloadHostedService(roloadableConfigurationProviders));
 
             return services;
         }
