@@ -59,6 +59,8 @@ namespace JsonRepositoryConfiguration
                     throw new FormatException(Errors.ErrorJsonParseError, e);
                 }
             }
+
+            OnReload();
         }
 
         internal async Task ReloadOnChangeAsync(CancellationToken stoppingToken)

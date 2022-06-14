@@ -4,7 +4,7 @@
     <TargetFramework>netstandard2.1</TargetFramework>
     <Nullable>enable</Nullable>
     <PackageId>JsonRepositoryConfiguration</PackageId>
-    <Version>0.9.5</Version>
+    <Version>0.9.6</Version>
     <Authors>Shoeib</Authors>
     <Product>JsonRepositoryConfiguration</Product>
     <Description>JSON Repository configuration provider implementation for Microsoft.Extensions.Configuration. The JSON can can be provided by any repository including SQL/NoSQL Database, API call, etc...</Description>
