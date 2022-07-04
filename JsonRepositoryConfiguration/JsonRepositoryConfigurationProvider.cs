@@ -11,17 +11,27 @@ using Microsoft.Extensions.Primitives;
 
 namespace JsonRepositoryConfiguration
 {
+    /// <summary>
+    /// A JSON Repository based <see cref="ConfigurationProvider"/>.
+    /// </summary>
     public class JsonRepositoryConfigurationProvider : ConfigurationProvider, IDisposable
     {
         internal JsonRepositoryConfigurationSource Source { get; }
         private IDisposable _changeTokenRegistration;
         private CancellationTokenSource _cts;
 
+        /// <summary>
+        /// Initializes a new instance with the specified source.
+        /// </summary>
+        /// <param name="source">The source settings.</param>
         public JsonRepositoryConfigurationProvider(JsonRepositoryConfigurationSource source)
         {
             Source = source ?? throw new ArgumentNullException(nameof(source));
         }
 
+        /// <summary>
+        /// Loads the JSON data from a <see cref="JsonRepositoryConfigurationSource"/>.
+        /// </summary>
         public override void Load()
         {
             Load(reload: false);
@@ -39,10 +49,10 @@ namespace JsonRepositoryConfiguration
                 }
                 else
                 {
-                    var error = new StringBuilder(string.Format(Errors.@FailedToGetJsonString, Source.Key));
+                    var error = new StringBuilder(string.Format(Errors.FailedToGetJsonString, Source.Key));
                     if (Source.JsonConfigurationRepository == null)
                     {
-                        error.Append(Errors.@JsonConfigurationRepositoryIsNull);
+                        error.Append(Errors.JsonConfigurationRepositoryIsNull);
                     }
 
                     HandleException(ExceptionDispatchInfo.Capture(new JsonRepositoryLoadException(error.ToString())));
@@ -86,7 +96,7 @@ namespace JsonRepositoryConfiguration
             string jsonString;
             try
             {
-                jsonString = Source.JsonConfigurationRepository.Get(Source.Key);
+                jsonString = Source.JsonConfigurationRepository.GetByKey(Source.Key);
             }
             catch (Exception e)
             {

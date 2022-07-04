@@ -12,6 +12,7 @@
         internal static string ErrorUnsupportedJsonToken => @"Unsupported JSON token '{0}' was found.";
 
         internal static string FailedToGetJsonString => @"Failed to get Json string for the key '{0}' from the repository.";
-        internal static string JsonConfigurationRepositoryIsNull => @"The provide IJsonConfigurationRepository is null.";
+        internal static string JsonRepositoryKeyCannotBeNullOrEmpty => @"Json Repository Key Cannot Be Null Or Empty.";
+        internal static string JsonConfigurationRepositoryIsNull => @"The IJsonConfigurationRepository is null.";
     }
 }
