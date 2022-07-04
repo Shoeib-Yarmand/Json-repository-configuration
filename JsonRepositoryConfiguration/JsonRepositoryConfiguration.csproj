@@ -6,14 +6,22 @@
     <Version>0.9.8</Version>
     <Authors>Shoeib</Authors>
     <Product>JsonRepositoryConfiguration</Product>
-    <Description>JSON Repository configuration provider implementation for Microsoft.Extensions.Configuration. The JSON can can be provided by any repository including SQL/NoSQL Database, API call, etc...</Description>
+    <Description>It is very similar to Microsoft.Extensions.Configuration.Json. The only difference is that instead of using a appsettings.json file with `AddJsonFile()`, you can use your own Repository with `AddJsonRepository()`. Your JSON Repository can provide the data from any internal/external source(s) including SQL/NoSQL Database calls, API calls, etc.</Description>
     <Copyright>MIT</Copyright>
-    <PackageProjectUrl>https://github.com/</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/Shoeib-Yarmand/Json-repository-configuration</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Shoeib-Yarmand/Json-repository-configuration</RepositoryUrl>
     <PackageTags>Configuration;Options;AddJson;Microsoft.Extensions.Configuration;JSON;Database;Repository;SQL;NoSQL</PackageTags>
     <PackageReleaseNotes>Increase code readablility. </PackageReleaseNotes>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="6.0.1" />
