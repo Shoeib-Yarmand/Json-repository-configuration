@@ -113,11 +113,13 @@ namespace JsonRepositoryConfiguration
 
         private string ToSha256(string input)
         {
-            using var sha256 = SHA256.Create();
-            var builder = new StringBuilder();
-            foreach (var b in sha256.ComputeHash(Encoding.UTF8.GetBytes(input)))
-                builder.Append(b.ToString("X2"));
-            return builder.ToString();
+            using (var sha256 = SHA256.Create())
+            {
+                var builder = new StringBuilder();
+                foreach (var b in sha256.ComputeHash(Encoding.UTF8.GetBytes(input)))
+                    builder.Append(b.ToString("X2"));
+                return builder.ToString();
+            }
         }
 
         private void HandleException(ExceptionDispatchInfo info)

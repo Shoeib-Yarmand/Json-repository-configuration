@@ -8,7 +8,7 @@
         /// </summary>
         /// <param name="key">The key for the JSON config</param>
         /// <returns>Entire JSON as string (serialized/stringify)</returns>
-        public string GetByKey(string key);
+        string GetByKey(string key);
     }
 }
 
