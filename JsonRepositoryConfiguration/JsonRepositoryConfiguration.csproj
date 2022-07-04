@@ -4,7 +4,7 @@
     <TargetFramework>netstandard2.1</TargetFramework>
     <Nullable>enable</Nullable>
     <PackageId>JsonRepositoryConfiguration</PackageId>
-    <Version>0.9.6</Version>
+    <Version>0.9.7</Version>
     <Authors>Shoeib</Authors>
     <Product>JsonRepositoryConfiguration</Product>
     <Description>JSON Repository configuration provider implementation for Microsoft.Extensions.Configuration. The JSON can can be provided by any repository including SQL/NoSQL Database, API call, etc...</Description>
@@ -12,7 +12,7 @@
     <PackageProjectUrl>https://github.com/</PackageProjectUrl>
     <RepositoryUrl>https://github.com/</RepositoryUrl>
     <PackageTags>Configuration;Options;AddJson;Microsoft.Extensions.Configuration;JSON;Database;Repository;SQL;NoSQL</PackageTags>
-    <PackageReleaseNotes>Register only one backgrond service</PackageReleaseNotes>
+    <PackageReleaseNotes>Increase code readablility. </PackageReleaseNotes>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
 
